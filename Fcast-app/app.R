@@ -27,7 +27,7 @@ ui <- fluidPage(
                  selectInput("Model", h3("Model Selection"), 
                              choices = Models[c(1,4:8)], selected = "Prophet")
     ),
-    mainPanel(plotlyOutput("selected_plot"), width = 7
+    mainPanel(plotlyOutput("selected_plot")
     )
   )
 )
