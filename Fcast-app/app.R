@@ -2,7 +2,7 @@ library(shiny)
 #setwd("~/GitHub/ShinyPractice/Fcast-app/data")
 CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
 CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
-Region.groups <- c("APJ","Americas","EMEA")#levels(factor(hdd_qty$RGN_DESC))
+Region.groups <- levels(factor(CFG_fcast.joined$RGN_DESC))
 Model.groups <- levels(factor(CFG_fcast.joined$Model))
 
 # Define UI ----
