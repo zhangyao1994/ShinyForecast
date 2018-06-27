@@ -11,16 +11,33 @@ library(plotly)
 library(scales) # for percent
 
 # For alignment
-alignCenter <- function(el) {
-  htmltools::tagAppendAttributes(el,
-                                 style="margin-left:auto;margin-right:auto;"
-  )
-}
+# alignCenter <- function(el) {
+#   htmltools::tagAppendAttributes(el,
+#                                  style="margin-left:auto;margin-right:auto;"
+#   )
+# }
 
 # Load data
 CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
+# Renaming the factors does not help with the legend order, but try it again!
+Modelnames <- levels(as.factor(CFG_fcast.joined$Model))
+NewModelNames <- c("3 ARIMA","1 Truth","8 MRP_Fcast","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost")
+len_Model <- length(Modelnames)
+for (i_Model in 1:len_Model){
+  CFG_fcast.joined$Model <- replace(CFG_fcast.joined$Model, which(Modelnames[i_Model]==CFG_fcast.joined$Model), NewModelNames[i_Model])
+}
+
+All_fcast_CV <- readRDS('All_fcast_CV.rds')
+Modelnames <- levels(as.factor(All_fcast_CV$Model))
+NewModelNames <- c("3 ARIMA","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost","1 Truth")
+len_Model <- length(Modelnames)
+for (i_Model in 1:len_Model){
+  All_fcast_CV$Model <- replace(All_fcast_CV$Model, which(Modelnames[i_Model]==All_fcast_CV$Model), NewModelNames[i_Model])
+}
+
 ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
 APEreslts <- readRDS('APEreslts.rds')
+
 
 # Selections for selectInput
 ResultsNames <- c('Attainment_Rates_Americas','MAPE_Americas','MAPE_median_Americas','Attainment_Rates_APJ','MAPE_APJ','MAPE_median_APJ','Attainment_Rates_EMEA','MAPE_EMEA','MAPE_median_EMEA')
@@ -49,16 +66,18 @@ ui <- fluidPage(
     )
   ),
   
-  fluidRow(column(width = 4, offset = 4, align = 'center',
-                  br(),
+  fluidRow(column(width = 4, align = 'center',
+                  br(),br(),
                   h4("APE of Forecast Region (%)"),
                   # Output: Table summarizing the values entered ----
-                  tableOutput("APEvalues")),
-           column(width = 4, align = 'center',
+                  tableOutput("APEvalues"),
                   br(),
                   h4("Weekly Mean APE (%)"),
                   # Output: Table summarizing the values entered ----
-                  tableOutput("APEValues_week"))
+                  tableOutput("APEValues_week")),
+           column(width = 8, align = 'center',
+                  plotlyOutput("CV_plot"))
+
     # sidebarPanel(selectInput("APE", h3("APE Selection"), 
     #                          choices = c('Weekly','Forecast_Region'), selected = 'Forecast_Region'),
     #              width = 4
@@ -114,8 +133,26 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('FY17W01', 'FY18W01', 'FY19W01')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
+      
     print(p)
   })
+  
+  # Plot CV
+  output$CV_plot <- renderPlotly({
+    # for certain CFG and Region
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q1"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+                    geom_point(size = 2) +
+                    geom_line(size = 1.5,alpha=0.6) +
+                    labs(title = paste("FY18Q1 - FY18Q2",'Weekly Sales'), x = "Fiscal Week", y = "Part Quantity") +
+                    theme_minimal(base_size = 14) +
+                    scale_color_tableau('tableau10medium') +
+                    scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
+                    scale_y_continuous(label=comma) + expand_limits(y = 0)) # + 
+    #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
+    #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
+    print(p)
+  })
+  
   # Plot Errors
   output$ErrorPlot1 <- renderPlotly({
     ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[1]),stat = "identity") +
