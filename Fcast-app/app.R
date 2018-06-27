@@ -14,6 +14,7 @@ library(scales) # for percent
 CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
 ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
 APEreslts <- readRDS('APEreslts.rds')
+
 # Selections for selectInput
 ResultsNames <- c('Attainment_Rates_Americas','MAPE_Americas','MAPE_median_Americas','Attainment_Rates_APJ','MAPE_APJ','MAPE_median_APJ','Attainment_Rates_EMEA','MAPE_EMEA','MAPE_median_EMEA')
 CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
@@ -24,16 +25,16 @@ Models <- levels(factor(CFG_fcast.joined$Model))
 ui <- fluidPage(
   titlePanel(strong("HDD Sales Data and Demand Forecast")),
   # Select CFG, Region, and Model
-  fluidRow(
-    sidebarPanel(selectInput("CFG", h3("CFG Selection"), 
+  sidebarLayout(
+    sidebarPanel(br(),br(),
+                 selectInput("CFG", h3("CFG Selection"), 
                              choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5"),
                  selectInput("Region", h3("Region Selection"), 
                              choices = Regions),
+                 br(),br(),br(),
                  # checkboxInput('AllRegions','All Regions'),
                  # selectInput("Model", h3("Model Selection"), 
                  #             choices = Models[c(1,4:8)], selected = "Prophet"),
-                 selectInput("APE", h3("APE Selection"), 
-                             choices = c('Weekly','Forecast_Region'), selected = 'Forecast_Region'),
                  width = 4
     ),
     # Output the HDD Trends
@@ -41,45 +42,54 @@ ui <- fluidPage(
     )
   ),
   
-  fluidRow(
+  fluidRow(column(width = 4, offset = 4,
+                  br(),
+                  h4("APE of Forecast Region (%)"),
+                  # Output: Table summarizing the values entered ----
+                  tableOutput("APEvalues")),
+           column(width = 4,
+                  br(),
+                  h4("Weekly Mean APE (%)"),
+                  # Output: Table summarizing the values entered ----
+                  tableOutput("APEValues_week"))
+    # sidebarPanel(selectInput("APE", h3("APE Selection"), 
+    #                          choices = c('Weekly','Forecast_Region'), selected = 'Forecast_Region'),
+    #              width = 4
+    # ),
     # Main panel for displaying outputs ----
-    mainPanel(
-      h4("APE Values"),
-      # Output: Table summarizing the values entered ----
-      tableOutput("APEvalues"),
-      width = 4
-    ),
-    mainPanel(
-      tabsetPanel(
-        tabPanel(str_replace_all(ResultsNames[1],'_',' '),
-                 plotlyOutput('ErrorPlot1')
-        ),
-        tabPanel(str_replace_all(ResultsNames[2],'_',' '),
-                 plotlyOutput('ErrorPlot2')
-        ),
-        tabPanel(str_replace_all(ResultsNames[3],'_',' '),
-                 plotlyOutput('ErrorPlot3')
-        ),
-        tabPanel(str_replace_all(ResultsNames[4],'_',' '),
-                 plotlyOutput('ErrorPlot4')
-        ),
-        tabPanel(str_replace_all(ResultsNames[5],'_',' '),
-                 plotlyOutput('ErrorPlot5')
-        ),
-        tabPanel(str_replace_all(ResultsNames[6],'_',' '),
-                 plotlyOutput('ErrorPlot6')
-        ),
-        tabPanel(str_replace_all(ResultsNames[7],'_',' '),
-                 plotlyOutput('ErrorPlot7')
-        ),
-        tabPanel(str_replace_all(ResultsNames[8],'_',' '),
-                 plotlyOutput('ErrorPlot8')
-        ),
-        tabPanel(str_replace_all(ResultsNames[9],'_',' '),
-                 plotlyOutput('ErrorPlot9')
-        )
+
+  ),
+  
+  mainPanel(
+    tabsetPanel(
+      tabPanel(str_replace_all(ResultsNames[1],'_',' '),
+               plotlyOutput('ErrorPlot1')
+      ),
+      tabPanel(str_replace_all(ResultsNames[2],'_',' '),
+               plotlyOutput('ErrorPlot2')
+      ),
+      tabPanel(str_replace_all(ResultsNames[3],'_',' '),
+               plotlyOutput('ErrorPlot3')
+      ),
+      tabPanel(str_replace_all(ResultsNames[4],'_',' '),
+               plotlyOutput('ErrorPlot4')
+      ),
+      tabPanel(str_replace_all(ResultsNames[5],'_',' '),
+               plotlyOutput('ErrorPlot5')
+      ),
+      tabPanel(str_replace_all(ResultsNames[6],'_',' '),
+               plotlyOutput('ErrorPlot6')
+      ),
+      tabPanel(str_replace_all(ResultsNames[7],'_',' '),
+               plotlyOutput('ErrorPlot7')
+      ),
+      tabPanel(str_replace_all(ResultsNames[8],'_',' '),
+               plotlyOutput('ErrorPlot8')
+      ),
+      tabPanel(str_replace_all(ResultsNames[9],'_',' '),
+               plotlyOutput('ErrorPlot9')
       )
-    )
+    ), width =12
   )
 )
 
@@ -112,24 +122,28 @@ server <- function(input, output) {
                scale_fill_tableau('tableau10medium'))
   })
   
-  # Reactive expression to APE values ----
+  # APE values Forecast Region----
   APEValues <- reactive({
     data.selected <- filter(APEreslts,CFG==input$CFG,Region==input$Region)
-    if (input$APE=='Forecast_Region'){
-      APE.selected <- data.selected[,seq(4,16,2)]
-      colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
-      APE.selected
-    }
-    else {
-      APE.selected <- data.selected[,seq(3,16,2)]
-      colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
-      APE.selected
-    }
+    APE.selected <- data.selected[,seq(4,16,2)]
+    colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
+    APE.selected
+  })
+  
+  # APE values Forecast Region----
+  APEValues_week <- reactive({
+    data.selected <- filter(APEreslts,CFG==input$CFG,Region==input$Region)
+    APE.selected <- data.selected[,seq(3,16,2)]
+    colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
+    APE.selected
   })
   
   # Show the values in an HTML table ----
   output$APEvalues <- renderTable({
     APEValues()
+  })
+  output$APEValues_week <- renderTable({
+    APEValues_week()
   })
 
 }
