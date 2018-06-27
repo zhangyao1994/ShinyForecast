@@ -10,6 +10,13 @@ library(tidyquant)
 library(plotly)
 library(scales) # for percent
 
+# For alignment
+alignCenter <- function(el) {
+  htmltools::tagAppendAttributes(el,
+                                 style="margin-left:auto;margin-right:auto;"
+  )
+}
+
 # Load data
 CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
 ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
@@ -42,12 +49,12 @@ ui <- fluidPage(
     )
   ),
   
-  fluidRow(column(width = 4, offset = 4,
+  fluidRow(column(width = 4, offset = 4, align = 'center',
                   br(),
                   h4("APE of Forecast Region (%)"),
                   # Output: Table summarizing the values entered ----
                   tableOutput("APEvalues")),
-           column(width = 4,
+           column(width = 4, align = 'center',
                   br(),
                   h4("Weekly Mean APE (%)"),
                   # Output: Table summarizing the values entered ----
@@ -60,7 +67,8 @@ ui <- fluidPage(
 
   ),
   
-  mainPanel(
+  fluidRow(column(width=10,offset = 1, hr(),br(),
+    titlePanel("Overall Evaluation for All CFGs"),
     tabsetPanel(
       tabPanel(str_replace_all(ResultsNames[1],'_',' '),
                plotlyOutput('ErrorPlot1')
@@ -89,8 +97,8 @@ ui <- fluidPage(
       tabPanel(str_replace_all(ResultsNames[9],'_',' '),
                plotlyOutput('ErrorPlot9')
       )
-    ), width =12
-  )
+    )
+  ))
 )
 
 # Define server logic ----
@@ -118,6 +126,48 @@ server <- function(input, output) {
   output$ErrorPlot2 <- renderPlotly({
     ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[2]),stat = "identity") +
                labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[2],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[2],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot3 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[3]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[3],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[3],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot4 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[4]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[4],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[4],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot5 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[5]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[5],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[5],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot6 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[6]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[6],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[6],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot7 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[7]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[7],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[7],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot8 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[8]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[8],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[8],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$ErrorPlot9 <- renderPlotly({
+    ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[9]),stat = "identity") +
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[9],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[9],'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
                scale_fill_tableau('tableau10medium'))
   })
