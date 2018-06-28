@@ -12,15 +12,19 @@ ui <- navbarPage(
     fluidPage(
       # Select CFG, Region, and Overall Metrics on One Row
       fluidRow(
-        column(3,align = 'center',
-               selectInput("CFG", h3("CFG Selection"), 
-                           choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
-        column(3,align = 'center',
-               selectInput("Region", h3("Region Selection"), 
-                           choices = Regions)),
-        column(3,align = 'center'
-               # selectInput("Metrics", h3("Overall Evaluation Metrics"), 
-               #             choices = c("Attainment Rates","MAPE"))
+        column(12,
+               box(width = NULL, status = "warning",
+                 column(3,align = 'center',
+                        selectInput("CFG", h3("CFG Selection"), 
+                                    choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
+                 column(3,align = 'center',
+                        selectInput("Region", h3("Region Selection"), 
+                                    choices = Regions)),
+                 column(3,align = 'center'
+                        # selectInput("Metrics", h3("Overall Evaluation Metrics"), 
+                        #             choices = c("Attainment Rates","MAPE"))
+                 )
+               )
         )
       ),
       
@@ -74,12 +78,26 @@ ui <- navbarPage(
                       )
       ))
     )
-    
-    
   ),
   
   tabPanel(
     'Cross-Validation', id = 'Cross-Validation',
+    
+    # Boxes
+    fluidRow(
+      box(status = "primary",title = "Overview",solidHeader = T,
+          sliderInput("orders", "Orders", min = 1, max = 2000, value = 650),
+          selectInput("progress", "Progress",
+                      choices = c("0%" = 0, "20%" = 20, "40%" = 40, "60%" = 60, "80%" = 80,
+                                  "100%" = 100)
+          )
+      ),
+      box(title = "Histogram box title",
+          status = "warning", solidHeader = TRUE, collapsible = TRUE,
+          plotOutput("plot", height = 250)
+      )
+    ),
+    
     fluidRow(
       column(12, align = 'center',
              h3("Four Quarterly Forecast Result Comparison"))

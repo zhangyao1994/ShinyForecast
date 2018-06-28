@@ -3,6 +3,7 @@
 # Load library
 library(shiny)
 library(shinythemes)
+library(shinydashboard)
 library(tidyverse)
 library(ggthemes)
 options(scipen = 999)
