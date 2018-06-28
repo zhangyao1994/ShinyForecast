@@ -173,4 +173,17 @@ server <- function(input, output) {
   striped = TRUE, bordered = TRUE,  
   align = 'c')
   
+  output$filter1 <- renderUI({
+    selection <- input$CFG
+    selectInput("CFG2", "CFG Selection", 
+                choices = CFGgroups, selected = selection)
+  })
+  output$filter2 <- renderUI({
+    selection <- input$Region
+    selectInput("Region2", "Region Selection", 
+                choices = Regions, selected = selection)
+  
+  })
+  
+  
 }

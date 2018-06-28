@@ -66,7 +66,9 @@ ui <- function(request){
                                 br(),
                                 h4("Weekly Mean APE (%)"),
                                 # Output: Table summarizing the values entered ----
-                                tableOutput("APEValues_week")
+                                tableOutput("APEValues_week"),
+                                br(),
+                                p("APE: Absolute Percent Error")
                          )
                      )
               )
@@ -122,11 +124,10 @@ ui <- function(request){
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
                          column(4,
-                                selectInput("CFG2", "CFG Selection", 
-                                            choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
+                                uiOutput('filter1')
+                         ),
                          column(4,
-                                selectInput("Region2", "Region Selection", 
-                                            choices = Regions))
+                                uiOutput('filter2'))
                      )
               )
             ),
