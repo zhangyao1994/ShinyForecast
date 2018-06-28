@@ -36,14 +36,15 @@ ui <- function(request){
                      br(),
                      br()
             ),
+            
             # Select CFG, Region, and Overall Metrics on One Row
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
-                         column(3,
+                         column(4,
                                 selectInput("CFG", "CFG Selection", 
                                             choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
-                         column(3,
+                         column(4,
                                 selectInput("Region", "Region Selection", 
                                             choices = Regions))
                      )
@@ -58,6 +59,7 @@ ui <- function(request){
                                 plotlyOutput("selected_plot")
                          ),
                          column(width = 4,
+                                br(),
                                 h4("APE of Forecast Region (%)"),
                                 # Output: Table summarizing the values entered ----
                                 tableOutput("APEvalues"),
@@ -119,10 +121,10 @@ ui <- function(request){
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
-                         column(3,
+                         column(4,
                                 selectInput("CFG2", "CFG Selection", 
                                             choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
-                         column(3,
+                         column(4,
                                 selectInput("Region2", "Region Selection", 
                                             choices = Regions))
                      )

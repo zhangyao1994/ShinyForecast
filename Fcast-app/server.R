@@ -163,9 +163,14 @@ server <- function(input, output) {
   # Show the values in an HTML table ----
   output$APEvalues <- renderTable({
     APEValues()
-  })
+  },  
+  striped = TRUE, bordered = TRUE,  
+  align = 'c')
+  
   output$APEValues_week <- renderTable({
     APEValues_week()
-  })
+  },  
+  striped = TRUE, bordered = TRUE,  
+  align = 'c')
   
 }
