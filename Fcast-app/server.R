@@ -18,75 +18,71 @@ server <- function(input, output) {
   # Plot CV
   output$CV_plotQ1 <- renderPlotly({
     # for certain CFG and Region
-    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q1"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q1"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
                     geom_point(size = 2) +
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q1 - FY18Q2"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
-                    scale_y_continuous(label=comma) + expand_limits(y = 0)) %>%
-                    layout(showlegend = FALSE) # + 
+                    scale_y_continuous(label=comma) + expand_limits(y = 0)) #%>%
+    #layout(showlegend = FALSE) # + 
     #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
     #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ1 <- renderPlotly({
     # for certain CFG and Region
-    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q1",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q1",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
                     geom_point(size = 2) +
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q2"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
-                    scale_y_continuous(label=comma) + expand_limits(y = 0)) %>%
-      layout(showlegend = FALSE) # + 
+                    scale_y_continuous(label=comma) + expand_limits(y = 0))
     #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
     #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ2 <- renderPlotly({
     # for certain CFG and Region
-    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q2",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q2",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
                     geom_point(size = 2) +
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q3"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
-                    scale_y_continuous(label=comma) + expand_limits(y = 0)) %>%
-      layout(showlegend = FALSE) # + 
+                    scale_y_continuous(label=comma) + expand_limits(y = 0))
     #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
     #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ3 <- renderPlotly({
     # for certain CFG and Region
-    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q3",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q3",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
                     geom_point(size = 2) +
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q4"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
-                    scale_y_continuous(label=comma) + expand_limits(y = 0)) %>%
-      layout(showlegend = FALSE) # + 
+                    scale_y_continuous(label=comma) + expand_limits(y = 0)) 
     #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
     #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ4 <- renderPlotly({
     # for certain CFG and Region
-    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG,Region==input$Region,Quarter=="FY18Q4",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
+    p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q4",Fiscal_Wk>="W13"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
                     geom_point(size = 2) +
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY19Q1"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W13', 'W26')) +
-                    scale_y_continuous(label=comma) + expand_limits(y = 0)) %>%
-      layout(showlegend = FALSE) # + 
+                    scale_y_continuous(label=comma) + expand_limits(y = 0))
     #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
     #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)

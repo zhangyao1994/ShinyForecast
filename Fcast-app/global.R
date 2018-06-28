@@ -4,6 +4,7 @@
 library(shiny)
 library(shinythemes)
 library(shinydashboard)
+library(shinyjs)
 library(tidyverse)
 library(ggthemes)
 options(scipen = 999)
