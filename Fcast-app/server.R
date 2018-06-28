@@ -1,125 +1,3 @@
-# Updated on 06/26/2018 # I want to make it better-looking tomorrow!!!
-
-# Load library
-library(shiny)
-library(tidyverse)
-library(ggthemes)
-options(scipen = 999)
-library(lubridate)
-library(tidyquant)
-library(plotly)
-library(scales) # for percent
-
-# For alignment
-# alignCenter <- function(el) {
-#   htmltools::tagAppendAttributes(el,
-#                                  style="margin-left:auto;margin-right:auto;"
-#   )
-# }
-
-# Load data
-CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
-# Renaming the factors does not help with the legend order, but try it again!
-Modelnames <- levels(as.factor(CFG_fcast.joined$Model))
-NewModelNames <- c("3 ARIMA","1 Truth","8 MRP_Fcast","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost")
-len_Model <- length(Modelnames)
-for (i_Model in 1:len_Model){
-  CFG_fcast.joined$Model <- replace(CFG_fcast.joined$Model, which(Modelnames[i_Model]==CFG_fcast.joined$Model), NewModelNames[i_Model])
-}
-
-All_fcast_CV <- readRDS('All_fcast_CV.rds')
-Modelnames <- levels(as.factor(All_fcast_CV$Model))
-NewModelNames <- c("3 ARIMA","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost","1 Truth")
-len_Model <- length(Modelnames)
-for (i_Model in 1:len_Model){
-  All_fcast_CV$Model <- replace(All_fcast_CV$Model, which(Modelnames[i_Model]==All_fcast_CV$Model), NewModelNames[i_Model])
-}
-
-ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
-APEreslts <- readRDS('APEreslts.rds')
-
-
-# Selections for selectInput
-ResultsNames <- c('Attainment_Rates_Americas','MAPE_Americas','MAPE_median_Americas','Attainment_Rates_APJ','MAPE_APJ','MAPE_median_APJ','Attainment_Rates_EMEA','MAPE_EMEA','MAPE_median_EMEA')
-CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
-Regions <- levels(factor(CFG_fcast.joined$Region))
-Models <- levels(factor(CFG_fcast.joined$Model))
-
-# Define UI ----
-ui <- fluidPage(
-  titlePanel(strong("HDD Sales Data and Demand Forecast")),
-  # Select CFG, Region, and Model
-  sidebarLayout(
-    sidebarPanel(br(),br(),
-                 selectInput("CFG", h3("CFG Selection"), 
-                             choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5"),
-                 selectInput("Region", h3("Region Selection"), 
-                             choices = Regions),
-                 br(),br(),br(),
-                 # checkboxInput('AllRegions','All Regions'),
-                 # selectInput("Model", h3("Model Selection"), 
-                 #             choices = Models[c(1,4:8)], selected = "Prophet"),
-                 width = 4
-    ),
-    # Output the HDD Trends
-    mainPanel(plotlyOutput("selected_plot")
-    )
-  ),
-  
-  fluidRow(column(width = 4, align = 'center',
-                  br(),br(),
-                  h4("APE of Forecast Region (%)"),
-                  # Output: Table summarizing the values entered ----
-                  tableOutput("APEvalues"),
-                  br(),
-                  h4("Weekly Mean APE (%)"),
-                  # Output: Table summarizing the values entered ----
-                  tableOutput("APEValues_week")),
-           column(width = 8, align = 'center',
-                  plotlyOutput("CV_plot"))
-
-    # sidebarPanel(selectInput("APE", h3("APE Selection"), 
-    #                          choices = c('Weekly','Forecast_Region'), selected = 'Forecast_Region'),
-    #              width = 4
-    # ),
-    # Main panel for displaying outputs ----
-
-  ),
-  
-  fluidRow(column(width=10,offset = 1, hr(),br(),
-    titlePanel("Overall Evaluation for All CFGs"),
-    tabsetPanel(
-      tabPanel(str_replace_all(ResultsNames[1],'_',' '),
-               plotlyOutput('ErrorPlot1')
-      ),
-      tabPanel(str_replace_all(ResultsNames[2],'_',' '),
-               plotlyOutput('ErrorPlot2')
-      ),
-      tabPanel(str_replace_all(ResultsNames[3],'_',' '),
-               plotlyOutput('ErrorPlot3')
-      ),
-      tabPanel(str_replace_all(ResultsNames[4],'_',' '),
-               plotlyOutput('ErrorPlot4')
-      ),
-      tabPanel(str_replace_all(ResultsNames[5],'_',' '),
-               plotlyOutput('ErrorPlot5')
-      ),
-      tabPanel(str_replace_all(ResultsNames[6],'_',' '),
-               plotlyOutput('ErrorPlot6')
-      ),
-      tabPanel(str_replace_all(ResultsNames[7],'_',' '),
-               plotlyOutput('ErrorPlot7')
-      ),
-      tabPanel(str_replace_all(ResultsNames[8],'_',' '),
-               plotlyOutput('ErrorPlot8')
-      ),
-      tabPanel(str_replace_all(ResultsNames[9],'_',' '),
-               plotlyOutput('ErrorPlot9')
-      )
-    )
-  ))
-)
-
 # Define server logic ----
 server <- function(input, output) {
   # Plot HDD Trends
@@ -133,7 +11,7 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('FY17W01', 'FY18W01', 'FY19W01')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
-      
+    
     print(p)
   })
   
@@ -156,9 +34,9 @@ server <- function(input, output) {
   # Plot Errors
   output$ErrorPlot1 <- renderPlotly({
     ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[1]),stat = "identity") +
-      labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[1],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[1],'_',' '),"(%)")) + 
-      theme_minimal(base_size = 14) + 
-      scale_fill_tableau('tableau10medium'))
+               labs(title = paste('Model Comparison by',str_replace_all(ResultsNames[1],'_',' ')), x = "Models", y = paste(str_replace_all(ResultsNames[1],'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
   })
   output$ErrorPlot2 <- renderPlotly({
     ggplotly(ErrorResults4plot %>% ggplot(aes(x=Models),fill=Models) + geom_bar(aes_string(y=ResultsNames[2]),stat = "identity") +
@@ -232,8 +110,5 @@ server <- function(input, output) {
   output$APEValues_week <- renderTable({
     APEValues_week()
   })
-
+  
 }
-
-# Run the app ----
-shinyApp(ui = ui, server = server)
