@@ -28,9 +28,10 @@ for (i_Model in 1:len_Model){
 APEreslts <- read_feather("~/Yao_Rdata/APE_values.feather")
 
 # Load data for Overall Errors
-#Eval.results_fcastRegion <- read_feather(Eval.results_fcastRegion,"~/Yao_Rdata/Eval.results_fcastRegion.feather")
-#Eval.results_wk <- read_feather(Eval.results_wk,"~/Yao_Rdata/Eval.results_wk.feather")
-ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
+Eval.results_fcastRegion <- read_feather("~/Yao_Rdata/Eval.results_fcastRegion.feather")
+Eval.results_wk <- read_feather("~/Yao_Rdata/Eval.results_wk.feather")
+
+# ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
 
 # Load data for Cross-Validation forecast
 All_fcast_CV <- readRDS('All_fcast_CV.rds')
@@ -46,6 +47,7 @@ ResultsNames <- c('Attainment_Rates_Americas','MAPE_Americas','MAPE_median_Ameri
 CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
 Regions <- levels(factor(CFG_fcast.joined$Region))
 Models <- levels(factor(CFG_fcast.joined$Model))
+Metrics <- levels(factor(Eval.results_wk$Results))
 
 # Run the app ----
 # shinyApp(ui = ui, server = server)

@@ -3,8 +3,6 @@ enableBookmarking(store = "url")
 ui <- function(request){
   tagList(
     includeCSS(path = "www/AdminLTE.css"),
-    
-    #includeCSS(path = "www/shinydashboard.css"),
     tags$style(type="text/css",
                '.well {background-color: white;}',
                "body {padding-top: 80px;}",
@@ -46,11 +44,15 @@ ui <- function(request){
                                             choices = CFGgroups, selected = "ESG_HDD_SAS12G_1_2TB_10K_2_5")),
                          column(4,
                                 selectInput("Region", "Region Selection", 
-                                            choices = Regions))
+                                            choices = Regions)),
+                         column(4,
+                                selectInput("Metric", "Metric Selection", 
+                                            choices = Metrics))
                      )
               )
             ),
             
+            # Output the HDD Trends and APE value tables
             fluidRow(
               column(12,
                      box(title = "FY19W07-FY19W18 Forecast Result Comparison",
@@ -73,45 +75,21 @@ ui <- function(request){
                      )
               )
             ),
-            # Output the HDD Trends and APE value tables
             
+            # Overall Evaluation for All CFGs
             fluidRow(column(12,
                             box(title = "Overall Evaluation for All CFGs",
                                 width = NULL, status = "primary", solidHeader = T,
-                                tabsetPanel(
-                                  tabPanel(str_replace_all(ResultsNames[1],'_',' '),
-                                           plotlyOutput('ErrorPlot1')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[2],'_',' '),
-                                           plotlyOutput('ErrorPlot2')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[3],'_',' '),
-                                           plotlyOutput('ErrorPlot3')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[4],'_',' '),
-                                           plotlyOutput('ErrorPlot4')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[5],'_',' '),
-                                           plotlyOutput('ErrorPlot5')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[6],'_',' '),
-                                           plotlyOutput('ErrorPlot6')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[7],'_',' '),
-                                           plotlyOutput('ErrorPlot7')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[8],'_',' '),
-                                           plotlyOutput('ErrorPlot8')
-                                  ),
-                                  tabPanel(str_replace_all(ResultsNames[9],'_',' '),
-                                           plotlyOutput('ErrorPlot9')
-                                  )
+                                column(6,plotlyOutput('ErrorPlotRegion')
+                                ),
+                                column(6,plotlyOutput('ErrorPlotWeekly')
                                 )
                             )
             )
             )
           ),
           
+          # Page 2
           tabPanel(
             'Cross-Validation', id = 'Cross-Validation',
             
@@ -119,6 +97,7 @@ ui <- function(request){
                      br(),
                      br()
             ),
+            
             # Select CFG, Region, and Overall Metrics on One Row
             fluidRow(
               column(width = 12,
@@ -127,7 +106,10 @@ ui <- function(request){
                                 uiOutput('filter1')
                          ),
                          column(4,
-                                uiOutput('filter2'))
+                                uiOutput('filter2')
+                         ),
+                         column(4,
+                                uiOutput('filter3'))
                      )
               )
             ),
