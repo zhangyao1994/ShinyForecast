@@ -83,7 +83,8 @@ ui <- function(request){
                                 column(6,plotlyOutput('ErrorPlotRegion')
                                 ),
                                 column(6,plotlyOutput('ErrorPlotWeekly')
-                                )
+                                ),
+                                footer = "Attainment Rate is the percentage of CFGs whose APEs are below 20% and higher is better. For MAPE and MAPE median, lower is better."
                             )
             )
             )
@@ -125,7 +126,8 @@ ui <- function(request){
                          column(width = 6, align = 'center',
                                 plotlyOutput("CV_plotQ3")),
                          column(width = 6, align = 'center',
-                                plotlyOutput("CV_plotQ4"))
+                                plotlyOutput("CV_plotQ4")),
+                         footer = "At the beginning of FY18Q1, using FY17 weekly sales data to forecast FY18Q2 with one quarter ahead. At the beginning of FY18Q2, using FY17 and FY18Q1 weekly sales data to forecast FY18Q3 with one quarter ahead. The same for FY18Q4 and FY19Q1."
                      )
               )
             )
