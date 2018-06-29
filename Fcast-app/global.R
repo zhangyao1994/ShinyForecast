@@ -13,6 +13,7 @@ library(lubridate)
 library(tidyquant)
 library(plotly)
 library(scales) # for percent
+library(feather)
 
 # Load data for 12-week forecast
 CFG_fcast.joined <- readRDS('CFG_fcast_joined.rds')
@@ -24,7 +25,12 @@ for (i_Model in 1:len_Model){
   CFG_fcast.joined$Model <- replace(CFG_fcast.joined$Model, which(Modelnames[i_Model]==CFG_fcast.joined$Model), NewModelNames[i_Model])
 }
 # Load APE values
-APEreslts <- readRDS('APEreslts.rds')
+APEreslts <- read_feather("~/Yao_Rdata/APE_values.feather")
+
+# Load data for Overall Errors
+#Eval.results_fcastRegion <- read_feather(Eval.results_fcastRegion,"~/Yao_Rdata/Eval.results_fcastRegion.feather")
+#Eval.results_wk <- read_feather(Eval.results_wk,"~/Yao_Rdata/Eval.results_wk.feather")
+ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
 
 # Load data for Cross-Validation forecast
 All_fcast_CV <- readRDS('All_fcast_CV.rds')
@@ -34,9 +40,6 @@ len_Model <- length(Modelnames)
 for (i_Model in 1:len_Model){
   All_fcast_CV$Model <- replace(All_fcast_CV$Model, which(Modelnames[i_Model]==All_fcast_CV$Model), NewModelNames[i_Model])
 }
-
-# Load data for Overall Errors
-ErrorResults4plot <- readRDS('ErrorResults4plot.rds')
 
 # Selections for selectInput
 ResultsNames <- c('Attainment_Rates_Americas','MAPE_Americas','MAPE_median_Americas','Attainment_Rates_APJ','MAPE_APJ','MAPE_median_APJ','Attainment_Rates_EMEA','MAPE_EMEA','MAPE_median_EMEA')
