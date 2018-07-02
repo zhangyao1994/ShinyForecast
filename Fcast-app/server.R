@@ -36,7 +36,7 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   APEValues <- reactive({
-    data.selected <- filter(APEreslts,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(4,16,2)]
     colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
@@ -44,20 +44,27 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   APEValues_week <- reactive({
-    data.selected <- filter(APEreslts,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(3,16,2)]
     colnames(APE.selected) <- c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
   })
   
   # Show the values in an HTML table ----
-  output$APEvalues <- renderTable({
-    APEValues()
-  },  striped = TRUE, bordered = TRUE, align = 'c')
+  output$APEvalues <- renderDataTable({
+    APEvalues.selected <- APEValues()
+    APEvalues.selected %>% datatable() %>%
+      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
+      formatStyle(colnames(APEvalues.selected)[which.min(APEvalues.selected[1,])], backgroundColor = 'lightblue')
+  })
   
-  output$APEValues_week <- renderTable({
-    APEValues_week()
-  },  striped = TRUE, bordered = TRUE,  align = 'c')
+  output$APEValues_week <- renderDataTable({
+    APEvalues.selected <- APEValues_week()
+    APEvalues.selected %>% datatable() %>%
+      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
+      formatStyle(colnames(APEvalues.selected)[which.min(APEvalues.selected[1,])], backgroundColor = 'lightblue')
+  }
+  )
   
   # Plot Errors
   output$ErrorPlotRegion <- renderPlotly({
@@ -142,7 +149,7 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   CV_APEValues <- reactive({
-    data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults_CV,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(5,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
@@ -153,7 +160,7 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   CV_APEValues_week <- reactive({
-    data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults_CV,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(4,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
@@ -163,13 +170,19 @@ server <- function(input, output) {
   })
   
   # Show the values in an HTML table ----
-  output$CV_APEvalues <- renderTable({
-    CV_APEValues()
-  },  striped = TRUE, bordered = TRUE, align = 'c')
+  output$CV_APEvalues <- renderDataTable({
+    APE.selected <- CV_APEValues()
+    APE.selected %>% datatable() %>%
+      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
+      formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
+  })
   
-  output$CV_APEValues_week <- renderTable({
-    CV_APEValues_week()
-  },  striped = TRUE, bordered = TRUE,  align = 'c')
+  output$CV_APEValues_week <- renderDataTable({
+    APE.selected <- CV_APEValues_week()
+    APE.selected %>% datatable() %>%
+      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
+      formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
+  })
   
   # Plot Errors
   output$CV_ErrorPlotRegion <- renderPlotly({

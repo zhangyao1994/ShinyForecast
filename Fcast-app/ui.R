@@ -57,20 +57,18 @@ ui <- function(request){
               column(12,
                      box(title = "FY19W07-FY19W18 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
+                         footer = "*In the tables, light blue background highlights the minimal Absolute Percent Error (APE).",
                          column(width = 8, 
                                 plotlyOutput("selected_plot")
                          ),
                          column(width = 4,
-                                br(),
                                 h4("APE of Forecast Region (%)"),
                                 # Output: Table summarizing the values entered ----
-                                tableOutput("APEvalues"),
-                                br(),
+                                dataTableOutput("APEvalues"),
+
                                 h4("Weekly Mean APE (%)"),
                                 # Output: Table summarizing the values entered ----
-                                tableOutput("APEValues_week"),
-                                br(),
-                                p("APE: Absolute Percent Error")
+                                dataTableOutput("APEValues_week")
                          )
                      )
               )
@@ -135,12 +133,12 @@ ui <- function(request){
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
                                        h4("APE of Forecast Region (%)"),
-                                       tableOutput("CV_APEvalues")),
+                                       dataTableOutput("CV_APEvalues")),
                                 
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
                                        h4("Weekly Mean APE (%)"),
-                                       tableOutput("CV_APEValues_week"))
+                                       dataTableOutput("CV_APEValues_week"))
                             ),
                             box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
                                 status = "primary",

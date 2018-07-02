@@ -12,17 +12,18 @@ library(tidyquant)
 library(plotly)
 library(scales) # for percent
 library(feather)
+library(DT)
 
 # Load data: feather is faster!
 # Test on the selected region: FY19W07-FY19W18
 CFG_fcast.joined <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/CFG_fcast.feather")
-APEreslts <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/APE_values.feather")
+APEresults <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/APE_values.feather")
 Eval.results_fcastRegion <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/Eval.results_fcastRegion.feather")
 Eval.results_wk <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/Eval.results_wk.feather")
 
 # Cross-validation on different quarters
 All_fcast_CV <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/All_fcast_cv.feather')
-APEreslts_CV <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/APE_values_CV.feather')
+APEresults_CV <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/APE_values_CV.feather')
 
 # Selections for selectInput
 CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
