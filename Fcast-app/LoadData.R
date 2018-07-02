@@ -1,0 +1,45 @@
+# Load the data and format them once to save some time for the Shiny App
+
+# Load library
+library(tidyverse)
+library(feather)
+
+# Load data for 12-week forecast
+CFG_fcast.joined <- read_feather('~/Yao_Rdata/CFG_fcast.feather')
+# Renaming the factors helps with the legend order.
+Modelnames <- levels(as.factor(CFG_fcast.joined$Model))
+NewModelNames <- c("3 ARIMA","1 Truth","8 MRP_Fcast","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost")
+len_Model <- length(Modelnames)
+for (i_Model in 1:len_Model){
+  CFG_fcast.joined$Model <- replace(CFG_fcast.joined$Model, which(Modelnames[i_Model]==CFG_fcast.joined$Model), NewModelNames[i_Model])
+}
+
+# Load APE values
+APEreslts <- read_feather("~/Yao_Rdata/APE_values.feather")
+
+# Load data for Overall Errors
+Eval.results_fcastRegion <- read_feather("~/Yao_Rdata/Eval.results_fcastRegion.feather")
+Eval.results_wk <- read_feather("~/Yao_Rdata/Eval.results_wk.feather")
+
+# Load data for Cross-Validation forecast
+All_fcast_CV <- read_feather('~/Yao_Rdata/All_fcast_cv.feather')
+Modelnames <- levels(as.factor(All_fcast_CV$Model))
+NewModelNames <- c("3 ARIMA","4 Prophet","7 TBATS","6 LinearModel","5 RandomForest","2 Xgboost","1 Truth")
+len_Model <- length(Modelnames)
+for (i_Model in 1:len_Model){
+  All_fcast_CV$Model <- replace(All_fcast_CV$Model, which(Modelnames[i_Model]==All_fcast_CV$Model), NewModelNames[i_Model])
+}
+
+APEreslts_CV <- read_feather('~/Yao_Rdata/APE_values_CV.feather')
+
+# Selections for selectInput
+CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
+Regions <- levels(factor(CFG_fcast.joined$Region))
+Models <- levels(factor(CFG_fcast.joined$Model))
+Metrics <- levels(factor(Eval.results_wk$Results))
+
+# remove unneccesary data
+rm(i_Model,len_Model,Modelnames,NewModelNames)
+
+# Save the whole workspace
+save.image("~/GitHub/ShinyPractice/Fcast-app/data/data.RData")
