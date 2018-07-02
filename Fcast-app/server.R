@@ -144,7 +144,9 @@ server <- function(input, output) {
   CV_APEValues <- reactive({
     data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(5,15,2)]
-    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1'),APE.selected)
+    APE.Mean <- as.numeric(lapply(APE.selected,mean))
+    APE.selected <- rbind(APE.selected,APE.Mean)
+    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1','Mean'),APE.selected)
     colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
   })
@@ -153,7 +155,9 @@ server <- function(input, output) {
   CV_APEValues_week <- reactive({
     data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(4,15,2)]
-    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1'),APE.selected)
+    APE.Mean <- as.numeric(lapply(APE.selected,mean))
+    APE.selected <- rbind(APE.selected,APE.Mean)
+    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1','Mean'),APE.selected)
     colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
   })
