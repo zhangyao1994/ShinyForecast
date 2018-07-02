@@ -177,7 +177,9 @@ server <- function(input, output) {
     #   formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
     
     APE.selected %>% formattable(
-      lapply(APE.selected[,2:7],function(x) color_tile("white", "orange"))
+      list(
+        area(col = c(Prophet,ARIMA,TBATS,lm,RF,Xgboost)) ~ normalize_bar("pink", 0.2)
+      ) 
     ) %>%
       as.datatable(., rownames = FALSE) %>%
       formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) 
