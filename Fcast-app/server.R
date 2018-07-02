@@ -172,9 +172,15 @@ server <- function(input, output) {
   # Show the values in an HTML table ----
   output$CV_APEvalues <- renderDataTable({
     APE.selected <- CV_APEValues()
-    APE.selected %>% datatable() %>%
-      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
-      formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
+    # APE.selected %>% datatable() %>%
+    #   formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
+    #   formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
+    
+    APE.selected %>% formattable(
+      lapply(APE.selected[,2:7],function(x) color_tile("white", "orange"))
+    ) %>%
+      as.datatable(., rownames = FALSE) %>%
+      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) 
   })
   
   output$CV_APEValues_week <- renderDataTable({

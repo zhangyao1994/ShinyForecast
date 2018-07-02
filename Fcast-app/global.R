@@ -13,6 +13,7 @@ library(plotly)
 library(scales) # for percent
 library(feather)
 library(DT)
+library(formattable)
 
 # Load data: feather is faster!
 # Test on the selected region: FY19W07-FY19W18
