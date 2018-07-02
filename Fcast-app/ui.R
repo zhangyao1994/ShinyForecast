@@ -164,10 +164,13 @@ ui <- function(request){
             
             # Select CFG, Region, and Overall Metrics on One Row
             fluidRow(
+              
               column(width = 12,
+                     
                      box(title = "Cross-Validation Results: MAPE of Forecast Region (%)", width = 12, solidHeader = T,
                          status = "primary",
-                         footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                         p('Note: for each row, light green: the min; light blue: the 2nd min; orange: the 3rd min'),
+                         # footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
                          dataTableOutput("MAPE_CV.Table")
                      ),
                      box(title = "Cross-Validation Results: Weekly MAPE (%)", width = 12, solidHeader = T,
