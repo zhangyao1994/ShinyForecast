@@ -140,4 +140,56 @@ server <- function(input, output) {
     print(p)
   })
   
+  # APE values Forecast Region----
+  CV_APEValues <- reactive({
+    data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
+    APE.selected <- data.selected[,seq(5,15,2)]
+    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1'),APE.selected)
+    colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
+    APE.selected
+  })
+  
+  # APE values Forecast Region----
+  CV_APEValues_week <- reactive({
+    data.selected <- filter(APEreslts_CV,CFG==input$CFG,Region==input$Region)
+    APE.selected <- data.selected[,seq(4,15,2)]
+    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1'),APE.selected)
+    colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
+    APE.selected
+  })
+  
+  # Show the values in an HTML table ----
+  output$CV_APEvalues <- renderTable({
+    CV_APEValues()
+  },  striped = TRUE, bordered = TRUE, align = 'c')
+  
+  output$CV_APEValues_week <- renderTable({
+    CV_APEValues_week()
+  },  striped = TRUE, bordered = TRUE,  align = 'c')
+  
+  # Plot Errors
+  output$CV_ErrorPlotRegion <- renderPlotly({
+    ggplotly(filter(Eval.results_fcastRegion,Region==input$Region,Results==input$Metric) %>% 
+               select(-Region,-Results,-Comb) %>%
+               gather(key="Model",value="Value") %>%
+               ggplot(aes(Model,Value)) +
+               geom_bar(stat = "identity") +
+               labs(title = paste('Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  output$CV_ErrorPlotWeekly <- renderPlotly({
+    ggplotly(filter(Eval.results_wk,Region==input$Region,Results==input$Metric) %>% 
+               select(-Region,-Results,-Comb) %>%
+               gather(key="Model",value="Value") %>%
+               ggplot(aes(Model,Value)) +
+               geom_bar(stat = "identity") +
+               labs(title = paste('Weekly Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
+               theme_minimal(base_size = 14) + 
+               scale_fill_tableau('tableau10medium'))
+  })
+  
+  # Page 3
+
+  
 }

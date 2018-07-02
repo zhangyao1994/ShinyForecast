@@ -117,17 +117,38 @@ ui <- function(request){
             
             fluidRow(
               column(12,
-                     box(title = "Four Quarterly Forecast Result Comparison", width = NULL, solidHeader = T,
+                     box(title = "Four Quarterly Forecast Result Comparison", width = 6, solidHeader = T,
                          status = "primary",
-                         column(width = 6, align = 'center',
+                         column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ1")),
-                         column(width = 6, align = 'center',
+                         column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ2")),
-                         column(width = 6, align = 'center',
+                         column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ3")),
-                         column(width = 6, align = 'center',
+                         column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ4")),
                          footer = "At the beginning of FY18Q1, using FY17 weekly sales data to forecast FY18Q2 with one quarter ahead. At the beginning of FY18Q2, using FY17 and FY18Q1 weekly sales data to forecast FY18Q3 with one quarter ahead. The same for FY18Q4 and FY19Q1."
+                     ),
+                     column(6,
+                            box(title = "Four Quarterly Forecast Error Comparison", width = 12, solidHeader = T,
+                                status = "primary",
+                                # Output: Table summarizing the values entered ----
+                                column(width = 12, align = 'center',
+                                       h4("APE of Forecast Region (%)"),
+                                       tableOutput("CV_APEvalues")),
+                                
+                                # Output: Table summarizing the values entered ----
+                                column(width = 12, align = 'center',
+                                       h4("Weekly Mean APE (%)"),
+                                       tableOutput("CV_APEValues_week"))
+                            ),
+                            box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
+                                status = "primary",
+                                column(12,plotlyOutput('CV_ErrorPlotRegion')
+                                ),
+                                column(12,plotlyOutput('CV_ErrorPlotWeekly')
+                                )
+                            )
                      )
               )
             )
@@ -135,7 +156,7 @@ ui <- function(request){
           
           # Page 3
           tabPanel(
-            'Model Selection', id = 'Cross-Validation',
+            'Model Selection', id = 'Model-selection',
             
             tags$div(id = "mydiv",
                      br(),
@@ -146,31 +167,7 @@ ui <- function(request){
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
-                         column(4,
-                                uiOutput('filter1')
-                         ),
-                         column(4,
-                                uiOutput('filter2')
-                         ),
-                         column(4,
-                                uiOutput('filter3'))
-                     )
-              )
-            ),
-            
-            fluidRow(
-              column(12,
-                     box(title = "Four Quarterly Forecast Result Comparison", width = NULL, solidHeader = T,
-                         status = "primary",
-                         column(width = 6, align = 'center',
-                                plotlyOutput("CV_plotQ1")),
-                         column(width = 6, align = 'center',
-                                plotlyOutput("CV_plotQ2")),
-                         column(width = 6, align = 'center',
-                                plotlyOutput("CV_plotQ3")),
-                         column(width = 6, align = 'center',
-                                plotlyOutput("CV_plotQ4")),
-                         footer = "At the beginning of FY18Q1, using FY17 weekly sales data to forecast FY18Q2 with one quarter ahead. At the beginning of FY18Q2, using FY17 and FY18Q1 weekly sales data to forecast FY18Q3 with one quarter ahead. The same for FY18Q4 and FY19Q1."
+                         p('Will display error tables here.')
                      )
               )
             )
