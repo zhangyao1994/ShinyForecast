@@ -2,6 +2,7 @@
 
 # Load library
 library(feather)
+library(tidyverse)
 
 # Load data for 12-week forecast
 CFG_fcast.joined <- read_feather('~/Yao_Rdata/CFG_fcast.feather')

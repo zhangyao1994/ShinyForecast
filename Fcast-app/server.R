@@ -53,16 +53,42 @@ server <- function(input, output) {
   # Show the values in an HTML table ----
   output$APEvalues <- renderDataTable({
     APEvalues.selected <- APEValues()
-    APEvalues.selected %>% datatable() %>%
-      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
-      formatStyle(colnames(APEvalues.selected)[which.min(APEvalues.selected[1,])], backgroundColor = 'lightblue')
+    APEvalues.selected %>% 
+      datatable(options=list(rowCallback = JS(
+        'function(row, data) {
+        var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[0]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[1]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>%
+      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) 
   })
   
   output$APEValues_week <- renderDataTable({
     APEvalues.selected <- APEValues_week()
-    APEvalues.selected %>% datatable() %>%
-      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
-      formatStyle(colnames(APEvalues.selected)[which.min(APEvalues.selected[1,])], backgroundColor = 'lightblue')
+    APEvalues.selected %>% 
+      datatable(options=list(rowCallback = JS(
+        'function(row, data) {
+        var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[0]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[1]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>%
+      formatRound(columns=c('MRP','Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) 
   }
   )
   
@@ -149,7 +175,7 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   CV_APEValues <- reactive({
-    data.selected <- filter(APEresults_CV,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults_CV,CFG==input$CFG2,Region==input$Region2)
     APE.selected <- data.selected[,seq(5,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
@@ -160,7 +186,7 @@ server <- function(input, output) {
   
   # APE values Forecast Region----
   CV_APEValues_week <- reactive({
-    data.selected <- filter(APEresults_CV,CFG==input$CFG,Region==input$Region)
+    data.selected <- filter(APEresults_CV,CFG==input$CFG2,Region==input$Region2)
     APE.selected <- data.selected[,seq(4,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
@@ -177,24 +203,47 @@ server <- function(input, output) {
     #   formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
     
     APE.selected %>% formattable(
-      list(
-        area(col = c(Prophet,ARIMA,TBATS,lm,RF,Xgboost)) ~ normalize_bar("pink", 0.2)
-      ) 
+      apply(APE.selected[,2:7],2,function(x) color_tile("white", "orange"))
     ) %>%
-      as.datatable(., rownames = FALSE) %>%
+      datatable(options=list(rowCallback = JS(
+        'function(row, data) {
+        var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[1]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[3]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>%
       formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) 
   })
   
   output$CV_APEValues_week <- renderDataTable({
     APE.selected <- CV_APEValues_week()
-    APE.selected %>% datatable() %>%
-      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
-      formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
+    APE.selected %>%  datatable(options=list(rowCallback = JS(
+      'function(row, data) {
+        var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[1]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[3]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>%
+      formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
   })
   
   # Plot Errors
   output$CV_ErrorPlotRegion <- renderPlotly({
-    ggplotly(filter(Eval.results_fcastRegion,Region==input$Region,Results==input$Metric) %>% 
+    ggplotly(filter(Eval.results_fcastRegion,Region==input$Region2,Results==input$Metric2) %>% 
                select(-Region,-Results,-Comb) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
@@ -204,7 +253,7 @@ server <- function(input, output) {
                scale_fill_tableau('tableau10medium'))
   })
   output$CV_ErrorPlotWeekly <- renderPlotly({
-    ggplotly(filter(Eval.results_wk,Region==input$Region,Results==input$Metric) %>% 
+    ggplotly(filter(Eval.results_wk,Region==input$Region2,Results==input$Metric2) %>% 
                select(-Region,-Results,-Comb) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
@@ -215,6 +264,39 @@ server <- function(input, output) {
   })
   
   # Page 3
-
+  output$MAPE_CV.Table <- renderDataTable({
+    MAPE_CV.Table %>% 
+      datatable(options=list(rowCallback = JS(
+        'function(row, data) {
+  var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[3]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[4]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>% formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
+  })
   
+  output$MAPE_CV_week.Table <- renderDataTable({
+    MAPE_CV_week.Table %>% 
+      datatable(options=list(rowCallback = JS(
+        'function(row, data) {
+        var num_data = data.slice(1,data.length)
+        num_data.sort(function (a, b) {  return a - b;  });
+        for(i=1;i < data.length; i++) {
+        if(data[i]==num_data[2]) {
+        $("td:eq("+i+")", row).css("background-color", "lightgreen")
+        } else if(data[i]==num_data[3]) {
+        $("td:eq("+i+")", row).css("background-color", "lightblue")
+        } else if(data[i]==num_data[4]) {
+        $("td:eq("+i+")", row).css("background-color", "orange")
+        }
+        }
+  }'))) %>% formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
+  })
 }

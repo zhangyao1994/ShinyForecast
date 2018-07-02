@@ -57,7 +57,7 @@ ui <- function(request){
               column(12,
                      box(title = "FY19W07-FY19W18 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
-                         footer = "*In the tables, light blue background highlights the minimal Absolute Percent Error (APE).",
+                         footer = "*For each row in the tables, light green background highlights the minimal Absolute Percent Error (APE); light blue: the 2nd min; orange: the 3rd min.",
                          column(width = 8, 
                                 plotlyOutput("selected_plot")
                          ),
@@ -130,6 +130,7 @@ ui <- function(request){
                      column(6,
                             box(title = "Four Quarterly Forecast Error Comparison", width = 12, solidHeader = T,
                                 status = "primary",
+                                footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
                                        h4("APE of Forecast Region (%)"),
@@ -164,8 +165,15 @@ ui <- function(request){
             # Select CFG, Region, and Overall Metrics on One Row
             fluidRow(
               column(width = 12,
-                     box(width = NULL, status = "info", solidHeader = T,
-                         p('Will display error tables here.')
+                     box(title = "Cross-Validation Results: MAPE of Forecast Region (%)", width = 12, solidHeader = T,
+                         status = "primary",
+                         footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                         dataTableOutput("MAPE_CV.Table")
+                     ),
+                     box(title = "Cross-Validation Results: Weekly MAPE (%)", width = 12, solidHeader = T,
+                         status = "primary",
+                         footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                         dataTableOutput("MAPE_CV_week.Table")
                      )
               )
             )
