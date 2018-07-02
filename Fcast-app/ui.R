@@ -28,7 +28,7 @@ ui <- function(request){
           windowTitle = "Forecast HDD",
           
           tabPanel(
-            'Overview', id = 'overview',
+            'Test Overview', id = 'test',
             
             tags$div(id = "mydiv",
                      br(),
@@ -131,7 +131,52 @@ ui <- function(request){
                      )
               )
             )
-          )
+          ),
+          
+          # Page 3
+          tabPanel(
+            'Model Selection', id = 'Cross-Validation',
+            
+            tags$div(id = "mydiv",
+                     br(),
+                     br()
+            ),
+            
+            # Select CFG, Region, and Overall Metrics on One Row
+            fluidRow(
+              column(width = 12,
+                     box(width = NULL, status = "info", solidHeader = T,
+                         column(4,
+                                uiOutput('filter1')
+                         ),
+                         column(4,
+                                uiOutput('filter2')
+                         ),
+                         column(4,
+                                uiOutput('filter3'))
+                     )
+              )
+            ),
+            
+            fluidRow(
+              column(12,
+                     box(title = "Four Quarterly Forecast Result Comparison", width = NULL, solidHeader = T,
+                         status = "primary",
+                         column(width = 6, align = 'center',
+                                plotlyOutput("CV_plotQ1")),
+                         column(width = 6, align = 'center',
+                                plotlyOutput("CV_plotQ2")),
+                         column(width = 6, align = 'center',
+                                plotlyOutput("CV_plotQ3")),
+                         column(width = 6, align = 'center',
+                                plotlyOutput("CV_plotQ4")),
+                         footer = "At the beginning of FY18Q1, using FY17 weekly sales data to forecast FY18Q2 with one quarter ahead. At the beginning of FY18Q2, using FY17 and FY18Q1 weekly sales data to forecast FY18Q3 with one quarter ahead. The same for FY18Q4 and FY19Q1."
+                     )
+              )
+            )
+          ) # Page 3
+          
+          
         )
       )
     )

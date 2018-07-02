@@ -4,6 +4,9 @@
 library(tidyverse)
 library(feather)
 
+# Start the clock!
+ptm <- proc.time()
+
 # Load data for 12-week forecast
 CFG_fcast.joined <- read_feather('~/Yao_Rdata/CFG_fcast.feather')
 # Renaming the factors helps with the legend order.
@@ -14,12 +17,15 @@ for (i_Model in 1:len_Model){
   CFG_fcast.joined$Model <- replace(CFG_fcast.joined$Model, which(Modelnames[i_Model]==CFG_fcast.joined$Model), NewModelNames[i_Model])
 }
 
-# Load APE values
-APEreslts <- read_feather("~/Yao_Rdata/APE_values.feather")
+write_feather(CFG_fcast.joined,"~/GitHub/ShinyPractice/Fcast-app/data/CFG_fcast.feather")
 
-# Load data for Overall Errors
-Eval.results_fcastRegion <- read_feather("~/Yao_Rdata/Eval.results_fcastRegion.feather")
-Eval.results_wk <- read_feather("~/Yao_Rdata/Eval.results_wk.feather")
+# # Load APE values
+# APEreslts <- read_feather("~/Yao_Rdata/APE_values.feather")
+# write_feather(APEresltsd,"~/GitHub/ShinyPractice/Fcast-app/data/APE_values.feather.feather")
+# 
+# # Load data for Overall Errors
+# Eval.results_fcastRegion <- read_feather("~/Yao_Rdata/Eval.results_fcastRegion.feather")
+# Eval.results_wk <- read_feather("~/Yao_Rdata/Eval.results_wk.feather")
 
 # Load data for Cross-Validation forecast
 All_fcast_CV <- read_feather('~/Yao_Rdata/All_fcast_cv.feather')
@@ -29,17 +35,15 @@ len_Model <- length(Modelnames)
 for (i_Model in 1:len_Model){
   All_fcast_CV$Model <- replace(All_fcast_CV$Model, which(Modelnames[i_Model]==All_fcast_CV$Model), NewModelNames[i_Model])
 }
+write_feather(All_fcast_CV,"~/GitHub/ShinyPractice/Fcast-app/data/All_fcast_cv.feather")
 
-APEreslts_CV <- read_feather('~/Yao_Rdata/APE_values_CV.feather')
+# APEreslts_CV <- read_feather('~/Yao_Rdata/APE_values_CV.feather')
 
-# Selections for selectInput
-CFGgroups <- levels(factor(CFG_fcast.joined$CFG))
-Regions <- levels(factor(CFG_fcast.joined$Region))
-Models <- levels(factor(CFG_fcast.joined$Model))
-Metrics <- levels(factor(Eval.results_wk$Results))
+# Stop the clock
+proc.time() - ptm
 
-# remove unneccesary data
-rm(i_Model,len_Model,Modelnames,NewModelNames)
-
-# Save the whole workspace
-save.image("~/GitHub/ShinyPractice/Fcast-app/data/data.RData")
+# # remove unneccesary data
+# rm(i_Model,len_Model,Modelnames,NewModelNames)
+# 
+# # Save the whole workspace
+# save.image("~/GitHub/ShinyPractice/Fcast-app/data/data.RData")
