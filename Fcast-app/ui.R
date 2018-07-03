@@ -57,7 +57,7 @@ ui <- function(request){
               column(12,
                      box(title = "FY19W07-FY19W18 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
-                         footer = "*For each row in the tables, light green background highlights the minimal Absolute Percent Error (APE); light blue: the 2nd min; orange: the 3rd min.",
+                         footer = 'Note: for each row, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.',
                          column(width = 7, 
                                 plotlyOutput("selected_plot")
                          ),
@@ -130,7 +130,7 @@ ui <- function(request){
                      column(6,
                             box(title = "Four Quarterly Forecast Error Comparison", width = 12, solidHeader = T,
                                 status = "primary",
-                                footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                                footer = 'Note: for each row, darker orange colors indicate lower errors, which are preferred.',
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
                                        h4("APE of Forecast Region (%)"),
@@ -162,20 +162,30 @@ ui <- function(request){
                      br()
             ),
             
-            # Select CFG, Region, and Overall Metrics on One Row
+            # Select Quarters or Mean
+            fluidRow(
+              column(width = 12,
+                     box(width = NULL, status = "info", solidHeader = T,
+                         column(4,
+                                selectInput("QtrMean", 'Quarters or Mean?', 
+                                            choices = c('Quarters','Mean')),selected = 'Quarters')
+                     )
+              )
+            ),
+            
             fluidRow(
               
               column(width = 12,
                      
                      box(title = "Cross-Validation Results: MAPE of Forecast Region (%)", width = 12, solidHeader = T,
                          status = "primary",
-                         p('Note: for each row, light green: the min; light blue: the 2nd min; orange: the 3rd min'),
+                         p('Note: for each row, darker orange colors indicate lower errors, which are preferred.'),
                          # footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
                          dataTableOutput("MAPE_CV.Table")
                      ),
                      box(title = "Cross-Validation Results: Weekly MAPE (%)", width = 12, solidHeader = T,
                          status = "primary",
-                         footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                         footer = "* For each row, darker orange colors indicate lower errors, which are preferred.",
                          dataTableOutput("MAPE_CV_week.Table")
                      )
               )
