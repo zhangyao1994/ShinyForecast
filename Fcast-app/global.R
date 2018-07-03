@@ -16,7 +16,7 @@ library(DT)
 library(formattable)
 
 # Load data: feather is faster!
-# Test on the selected region: FY19W07-FY19W18
+# Test on the selected region: FY19W07-FY19W20
 CFG_fcast.joined <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/CFG_fcast.feather")
 APEresults <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/APE_values.feather")
 Eval.results_fcastRegion <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/Eval.results_fcastRegion.feather")
