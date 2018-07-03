@@ -14,7 +14,7 @@ server <- function(input, output) {
   })
   output$filter3 <- renderUI({
     selection <- input$Metric
-    selectInput("Metric2", "Metric Selection", 
+    selectInput("Metric2", "Overall Metric Selection", 
                 choices = Metrics, selected = selection)
   })
   

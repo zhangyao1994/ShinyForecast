@@ -46,7 +46,7 @@ ui <- function(request){
                                 selectInput("Region", "Region Selection", 
                                             choices = Regions)),
                          column(4,
-                                selectInput("Metric", "Metric Selection", 
+                                selectInput("Metric", "Overall Metric Selection", 
                                             choices = Metrics))
                      )
               )
@@ -65,7 +65,7 @@ ui <- function(request){
                                 h4("APE of Forecast Region (%)"),
                                 # Output: Table summarizing the values entered ----
                                 dataTableOutput("APEvalues"),
-
+                                
                                 h4("Weekly Mean APE (%)"),
                                 # Output: Table summarizing the values entered ----
                                 dataTableOutput("APEValues_week")
@@ -90,7 +90,7 @@ ui <- function(request){
           
           # Page 2
           tabPanel(
-            'Cross-Validation', id = 'Cross-Validation',
+            'Train Session', id = 'Cross-Validation',
             
             tags$div(id = "mydiv",
                      br(),
@@ -106,9 +106,7 @@ ui <- function(request){
                          ),
                          column(4,
                                 uiOutput('filter2')
-                         ),
-                         column(4,
-                                uiOutput('filter3'))
+                         )
                      )
               )
             ),
@@ -140,13 +138,6 @@ ui <- function(request){
                                 column(width = 12, align = 'center',
                                        h4("Weekly Mean APE (%)"),
                                        dataTableOutput("CV_APEValues_week"))
-                            ),
-                            box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
-                                status = "primary",
-                                column(12,plotlyOutput('CV_ErrorPlotRegion')
-                                ),
-                                column(12,plotlyOutput('CV_ErrorPlotWeekly')
-                                )
                             )
                      )
               )
@@ -155,7 +146,7 @@ ui <- function(request){
           
           # Page 3
           tabPanel(
-            'Model Selection', id = 'Model-selection',
+            'Model Evaluation', id = 'Model-Evaluation',
             
             tags$div(id = "mydiv",
                      br(),
@@ -166,16 +157,18 @@ ui <- function(request){
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
+                         column(8,
+                                selectInput("QtrMean", 'MAPE Results: Quarters or Mean?', 
+                                            choices = c('Quarters','Mean')),selected = 'Quarters'),
                          column(4,
-                                selectInput("QtrMean", 'Quarters or Mean?', 
-                                            choices = c('Quarters','Mean')),selected = 'Quarters')
+                                uiOutput('filter3'))
                      )
               )
             ),
             
             fluidRow(
               
-              column(width = 12,
+              column(width = 8,
                      
                      box(title = "Cross-Validation Results: MAPE of Forecast Region (%)", width = 12, solidHeader = T,
                          status = "primary",
@@ -188,12 +181,19 @@ ui <- function(request){
                          footer = "* For each row, darker orange colors indicate lower errors, which are preferred.",
                          dataTableOutput("MAPE_CV_week.Table")
                      )
+              ),
+              column(width = 4,
+                     box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
+                         status = "primary",
+                         column(12,plotlyOutput('CV_ErrorPlotRegion')
+                         ),
+                         column(12,plotlyOutput('CV_ErrorPlotWeekly')
+                         )
+                     )
               )
-            )
-          ) # Page 3
-          
-          
-        )
+            ) 
+          )# Page 3
+        ) 
       )
     )
   ) # end of tagList
