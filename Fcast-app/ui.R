@@ -55,7 +55,7 @@ ui <- function(request){
             # Output the HDD Trends and APE value tables
             fluidRow(
               column(12,
-                     box(title = "FY19W07-FY19W18 Forecast Result Comparison",
+                     box(title = "FY19W07-FY19W20 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
                          footer = 'Note: for each row, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.',
                          column(width = 7, 
@@ -157,11 +157,13 @@ ui <- function(request){
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
-                         column(8,
+                         column(4,
                                 selectInput("QtrMean", 'MAPE Results: Quarters or Mean?', 
                                             choices = c('Quarters','Mean')),selected = 'Quarters'),
                          column(4,
-                                uiOutput('filter3'))
+                                uiOutput('filter3')),
+                         column(4,
+                                uiOutput('filter4'))
                      )
               )
             ),
