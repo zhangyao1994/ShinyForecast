@@ -269,8 +269,8 @@ server <- function(input, output) {
   
   # Plot Errors
   output$CV_ErrorPlotRegion <- renderPlotly({
-    ggplotly(filter(Eval.results_fcastRegion,Region==input$Region2,Results==input$Metric2) %>% 
-               select(-Region,-Results,-Comb) %>%
+    ggplotly(filter(Eval.CV_fcastRegion,Region==input$Region2,Results==input$Metric2) %>% 
+               select(-Region,-Results) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
@@ -279,8 +279,8 @@ server <- function(input, output) {
                scale_fill_tableau('tableau10medium'))
   })
   output$CV_ErrorPlotWeekly <- renderPlotly({
-    ggplotly(filter(Eval.results_wk,Region==input$Region2,Results==input$Metric2) %>% 
-               select(-Region,-Results,-Comb) %>%
+    ggplotly(filter(Eval.CV_wk,Region==input$Region2,Results==input$Metric2) %>% 
+               select(-Region,-Results) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
