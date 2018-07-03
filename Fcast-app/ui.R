@@ -58,10 +58,10 @@ ui <- function(request){
                      box(title = "FY19W07-FY19W18 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
                          footer = "*For each row in the tables, light green background highlights the minimal Absolute Percent Error (APE); light blue: the 2nd min; orange: the 3rd min.",
-                         column(width = 8, 
+                         column(width = 7, 
                                 plotlyOutput("selected_plot")
                          ),
-                         column(width = 4,
+                         column(width = 5,
                                 h4("APE of Forecast Region (%)"),
                                 # Output: Table summarizing the values entered ----
                                 dataTableOutput("APEvalues"),
