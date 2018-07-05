@@ -147,8 +147,6 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
-    #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
-    #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ2 <- renderPlotly({
@@ -161,8 +159,6 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
-    #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
-    #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ3 <- renderPlotly({
@@ -175,8 +171,6 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0)) 
-    #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
-    #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   output$CV_plotQ4 <- renderPlotly({
@@ -189,8 +183,6 @@ server <- function(input, output) {
                     scale_color_tableau('tableau10medium') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
-    #                 guides(color=FALSE) + # remove the default legend, but this does not help with the legend order
-    #                 scale_color_discrete(breaks=c("Truth","Xgboost","ARIMA","Prophet","RandomForest","LinearModel","TBATS")))
     print(p)
   })
   
@@ -219,10 +211,6 @@ server <- function(input, output) {
   # Show the values in an HTML table ----
   output$CV_APEvalues <- renderDataTable({
     APE.selected <- CV_APEValues()
-    # APE.selected %>% datatable() %>%
-    #   formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2) %>%
-    #   formatStyle(colnames(APE.selected)[which.min(APE.selected[5,2:7])+1], backgroundColor = 'lightblue')
-    
     APE.selected %>% 
       datatable(options=list(rowCallback = JS(
         'function(row, data) {
@@ -404,13 +392,3 @@ server <- function(input, output) {
   })
 }
 
-# ggplotly(filter(APEresults.wtSelection,Region==Regions[1]) %>% 
-#   select(APE_FcastRegion_MRP,APE_FcastRegion_Prophet,APE_FcastRegion_ARIMA,APE_FcastRegion_TBATS,APE_FcastRegion_lm,APE_FcastRegion_RF,APE_FcastRegion_Xgboost,APE_FcastRegion_Comb) %>%
-#   gather(key="Model",value="Value") %>%
-#   ggplot(aes(Model,Value)) +
-#   geom_boxplot() +
-#   scale_x_discrete(breaks = colnames(APEresults.wtSelection)[seq(4,18,1)]) +
-#   #geom_dotplot(binaxis='y',stackdir='center') +
-#   #labs(title = paste('Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
-#   theme_minimal(base_size = 14) + 
-#   scale_fill_tableau('tableau10medium'))

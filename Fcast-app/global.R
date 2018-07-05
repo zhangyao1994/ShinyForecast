@@ -21,12 +21,14 @@ CFG_fcast.joined <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/CFG_fcas
 APEresults <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/APE_values.feather")
 Eval.results_fcastRegion <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/Eval.results_fcastRegion.feather")
 Eval.results_wk <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/Eval.results_wk.feather")
+APEresults.wtSelection <- read_feather("~/GitHub/ShinyPractice/Fcast-app/data/APEresults.wtSelection.feather")
 
 # Cross-validation on different quarters
 All_fcast_CV <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/All_fcast_cv.feather')
 APEresults_CV <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/APE_values_CV.feather')
 Eval.CV_wk <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/Eval.CV_wk.feather')
 Eval.CV_fcastRegion <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/Eval.CV_fcastRegion.feather')
+MAPE_CV.wtSelection <- read_feather('~/GitHub/ShinyPractice/Fcast-app/data/MAPE_CV.wtSelection.feather')
 
 # Prepare the data table for Page 3
 MAPE_CV.Table <- APEresults_CV %>% group_by(CFG,Region) %>% 
