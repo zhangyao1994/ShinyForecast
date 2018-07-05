@@ -275,11 +275,11 @@ server <- function(input, output) {
   # Page 3
   Qtr_flag <- reactive({
     if (input$QtrMean=='Quarters'){
-      TRUE} else {FALSE}
+      1} else {2}
   })
   
   output$MAPE_CV.Table <- renderDataTable({
-    if (Qtr_flag()){
+    if (Qtr_flag()==1){
       data.selected <- APEresults_CV
       APE.selected <- data.selected[,c(1,2,3,seq(5,15,2))]
       colnames(APE.selected) <- c("CFG",'Quarter',"Region",'Prophet','ARIMA','TBATS','lm','RF','Xgboost')
@@ -309,29 +309,29 @@ server <- function(input, output) {
       MAPE_CV.Table %>%
         datatable(options=list(rowCallback = JS(
           'function(row, data) {
-          var num_data = data.slice(1,data.length)
+        var num_data = data.slice(1,data.length)
           num_data.sort(function (a, b) {  return a - b;  });
           for(i=1;i < data.length; i++) {
-         if(data[i]==num_data[6]) {
+          if(data[i]==num_data[6]) {
           $("td:eq("+i+")", row).css("background-color", "#ffffff")
-  } else if(data[i]==num_data[5]) {
-        $("td:eq("+i+")", row).css("background-color", "#fff1e6")
-  } else if(data[i]==num_data[4]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffe4cc")
-  } else if(data[i]==num_data[3]) {
-        $("td:eq("+i+")", row).css("background-color", " #ffc999")
-  } else if(data[i]==num_data[2]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffa04d")
-  } else if(data[i]==num_data[1]) {
-        $("td:eq("+i+")", row).css("background-color", "#ff7700")
-  }
+          } else if(data[i]==num_data[5]) {
+          $("td:eq("+i+")", row).css("background-color", "#fff1e6")
+          } else if(data[i]==num_data[4]) {
+          $("td:eq("+i+")", row).css("background-color", "#ffe4cc")
+          } else if(data[i]==num_data[3]) {
+          $("td:eq("+i+")", row).css("background-color", " #ffc999")
+          } else if(data[i]==num_data[2]) {
+          $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+          } else if(data[i]==num_data[1]) {
+          $("td:eq("+i+")", row).css("background-color", "#ff7700")
+          }
+          }
     }')),rownames = FALSE) %>%
         formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
-    }
-  })
+  }})
   
   output$MAPE_CV_week.Table <- renderDataTable({
-    if (Qtr_flag()){
+    if (Qtr_flag()==1){
       data.selected <- APEresults_CV
       APE.selected <- data.selected[,c(1,2,3,seq(4,15,2))]
       colnames(APE.selected) <- c("CFG",'Quarter',"Region",'Prophet','ARIMA','TBATS','lm','RF','Xgboost')
