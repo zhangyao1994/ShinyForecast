@@ -188,7 +188,11 @@ ui <- function(request){
                      box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
                          status = "primary",
                          column(12,plotlyOutput('CV_ErrorPlotRegion')
-                         ),
+                         )
+                     ),
+                     box(#collapsible = TRUE, collapsed = TRUE,# This does not work
+                         title = "Overall Evaluation for All CFGs using Weekly errors", width = 12, solidHeader = T,
+                         status = "primary", 
                          column(12,plotlyOutput('CV_ErrorPlotWeekly')
                          )
                      )

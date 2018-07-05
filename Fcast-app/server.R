@@ -116,7 +116,7 @@ server <- function(input, output) {
   # Plot Errors
   output$ErrorPlotRegion <- renderPlotly({
     ggplotly(filter(Eval.results_fcastRegion,Region==input$Region,Results==input$Metric) %>% 
-               select(-Region,-Results,-Comb) %>%
+               select(-Region,-Results) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
@@ -126,7 +126,7 @@ server <- function(input, output) {
   })
   output$ErrorPlotWeekly <- renderPlotly({
     ggplotly(filter(Eval.results_wk,Region==input$Region,Results==input$Metric) %>% 
-               select(-Region,-Results,-Comb) %>%
+               select(-Region,-Results) %>%
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
@@ -403,3 +403,14 @@ server <- function(input, output) {
                scale_fill_tableau('tableau10medium'))
   })
 }
+
+# ggplotly(filter(APEresults.wtSelection,Region==Regions[1]) %>% 
+#   select(APE_FcastRegion_MRP,APE_FcastRegion_Prophet,APE_FcastRegion_ARIMA,APE_FcastRegion_TBATS,APE_FcastRegion_lm,APE_FcastRegion_RF,APE_FcastRegion_Xgboost,APE_FcastRegion_Comb) %>%
+#   gather(key="Model",value="Value") %>%
+#   ggplot(aes(Model,Value)) +
+#   geom_boxplot() +
+#   scale_x_discrete(breaks = colnames(APEresults.wtSelection)[seq(4,18,1)]) +
+#   #geom_dotplot(binaxis='y',stackdir='center') +
+#   #labs(title = paste('Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
+#   theme_minimal(base_size = 14) + 
+#   scale_fill_tableau('tableau10medium'))
