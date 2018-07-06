@@ -192,7 +192,7 @@ server <- function(input, output) {
     APE.selected <- data.selected[,seq(5,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
-    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1','Mean'),APE.selected)
+    APE.selected <- cbind(c('FY18Q1','FY18Q2','FY18Q3','FY18Q4','Mean'),APE.selected)
     colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
   })
@@ -203,7 +203,7 @@ server <- function(input, output) {
     APE.selected <- data.selected[,seq(4,15,2)]
     APE.Mean <- as.numeric(lapply(APE.selected,mean))
     APE.selected <- rbind(APE.selected,APE.Mean)
-    APE.selected <- cbind(c('FY18Q2','FY18Q3','FY18Q4','FY19Q1','Mean'),APE.selected)
+    APE.selected <- cbind(c('FY18Q1','FY18Q2','FY18Q3','FY18Q4','Mean'),APE.selected)
     colnames(APE.selected) <- c('Quarter','Prophet','ARIMA','TBATS','lm','RF','Xgboost')
     APE.selected
   })

@@ -57,7 +57,7 @@ ui <- function(request){
               column(12,
                      box(title = "FY19W07-FY19W20 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
-                         footer = 'Note: for each row, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.',
+                         footer = 'Note: for each row in the tables, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.',
                          column(width = 7, 
                                 plotlyOutput("selected_plot")
                          ),
