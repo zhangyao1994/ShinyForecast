@@ -57,7 +57,8 @@ ui <- function(request){
               column(12,
                      box(title = "FY19W07-FY19W20 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
-                         footer = 'Note: for each row in the tables, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.',
+                         p('Based on the sales data before FY19W07, different models are applied to forecast HDD demand during FY19W07-FY19W20. Forecast results are compared to MRP.'),
+                         p('Note: for each row in the tables, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.'),
                          column(width = 7, 
                                 plotlyOutput("selected_plot")
                          ),
@@ -78,11 +79,12 @@ ui <- function(request){
             fluidRow(column(12,
                             box(title = "Overall Evaluation for All CFGs",
                                 width = NULL, status = "primary", solidHeader = T,
+                                p("Attainment Rate is the percentage of CFGs whose APEs are below 20% and higher is better. For MAPE and MAPE median, lower is better."),
+                                p('"Comb" Model is selecting the model with the lowerst MAPE for each CFG during the Train Session.'),
                                 column(6,plotlyOutput('ErrorPlotRegion')
                                 ),
                                 column(6,plotlyOutput('ErrorPlotWeekly')
-                                ),
-                                footer = "Attainment Rate is the percentage of CFGs whose APEs are below 20% and higher is better. For MAPE and MAPE median, lower is better."
+                                )
                             )
             )
             )
@@ -111,10 +113,13 @@ ui <- function(request){
               )
             ),
             
+            
             fluidRow(
               column(12,
                      box(title = "Four Quarterly Forecast Result Comparison", width = 6, solidHeader = T,
                          status = "primary",
+                         p('Each model is evaluated on a quarterly rolling forecasting.'),
+                         p('At the beginning of FY17Q4, using FY17Q1-FY17Q3 weekly sales data to forecast FY18Q1 with one quarter ahead. At the beginning of FY18Q1, using FY17Q1-FY17Q4 weekly sales data to forecast FY18Q2 with one quarter ahead. The same for FY18Q3 and FY18Q4.'),
                          column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ1")),
                          column(width = 12, align = 'center',
@@ -122,13 +127,12 @@ ui <- function(request){
                          column(width = 12, align = 'center',
                                 plotlyOutput("CV_plotQ3")),
                          column(width = 12, align = 'center',
-                                plotlyOutput("CV_plotQ4")),
-                         footer = "At the beginning of FY18Q1, using FY17 weekly sales data to forecast FY18Q2 with one quarter ahead. At the beginning of FY18Q2, using FY17 and FY18Q1 weekly sales data to forecast FY18Q3 with one quarter ahead. The same for FY18Q4 and FY19Q1."
+                                plotlyOutput("CV_plotQ4"))
                      ),
                      column(6,
                             box(title = "Four Quarterly Forecast Error Comparison", width = 12, solidHeader = T,
                                 status = "primary",
-                                footer = 'Note: for each row, darker orange colors indicate lower errors, which are preferred.',
+                                p('Note: for each row, darker orange colors indicate lower errors, which are preferred.'),
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
                                        h4("APE of Forecast Region (%)"),
@@ -174,6 +178,7 @@ ui <- function(request){
                      
                      box(title = "Cross-Validation Results: MAPE of Forecast Region (%)", width = 12, solidHeader = T,
                          status = "primary",
+                         p("This page shows the evaluation results of Train Session, which is the quarterly cross-validation session."),
                          p('Note: for each row, darker orange colors indicate lower errors, which are preferred.'),
                          # footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
                          dataTableOutput("MAPE_CV.Table")
@@ -187,6 +192,8 @@ ui <- function(request){
               column(width = 4,
                      box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
                          status = "primary",
+                         p('Attainment Rate is the percentage of CFGs whose MAPEs are below 20% and higher is better. For MAPE and MAPE median, lower is better.'),
+                         p('"Comb" Model is selecting the model with the lowerst MAPE for each CFG.'),
                          column(12,plotlyOutput('CV_ErrorPlotRegion')
                          )
                      ),

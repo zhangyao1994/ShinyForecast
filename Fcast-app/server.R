@@ -67,17 +67,20 @@ server <- function(input, output) {
           if(data[i]==num_data[6]) {
           $("td:eq("+i+")", row).css("background-color", "#ffffff")
   } else if(data[i]==num_data[5]) {
-        $("td:eq("+i+")", row).css("background-color", "#fff1e6")
+        $("td:eq("+i+")", row).css("background-color", "#ccffff")
   } else if(data[i]==num_data[4]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffe4cc")
+        $("td:eq("+i+")", row).css("background-color", "#99ffff")
   } else if(data[i]==num_data[3]) {
-        $("td:eq("+i+")", row).css("background-color", " #ffc999")
+        $("td:eq("+i+")", row).css("background-color", "#66ffff")
   } else if(data[i]==num_data[2]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+        $("td:eq("+i+")", row).css("background-color", "#00ccff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[1]) {
-        $("td:eq("+i+")", row).css("background-color", "#ff7700")
+        $("td:eq("+i+")", row).css("background-color", "#0099ff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[0]) {
-        $("td:eq("+i+")", row).css("background-color", "#cc5f00")
+        $("td:eq("+i+")", row).css("background-color", "#0066ff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   }
         }
   }'))) %>% 
@@ -93,19 +96,22 @@ server <- function(input, output) {
         num_data.sort(function (a, b) {  return a - b;  });
         for(i=1;i < data.length; i++) {
           if(data[i]==num_data[6]) {
-          $("td:eq("+i+")", row).css("background-color", "#ffffff")
+        $("td:eq("+i+")", row).css("background-color", "#ffffff")
   } else if(data[i]==num_data[5]) {
-        $("td:eq("+i+")", row).css("background-color", "#fff1e6")
+        $("td:eq("+i+")", row).css("background-color", "#ccffff")
   } else if(data[i]==num_data[4]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffe4cc")
+        $("td:eq("+i+")", row).css("background-color", "#99ffff")
   } else if(data[i]==num_data[3]) {
-        $("td:eq("+i+")", row).css("background-color", " #ffc999")
+        $("td:eq("+i+")", row).css("background-color", "#66ffff")
   } else if(data[i]==num_data[2]) {
-        $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+        $("td:eq("+i+")", row).css("background-color", "#00ccff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[1]) {
-        $("td:eq("+i+")", row).css("background-color", "#ff7700")
+        $("td:eq("+i+")", row).css("background-color", "#0099ff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[0]) {
-        $("td:eq("+i+")", row).css("background-color", "#cc5f00")
+        $("td:eq("+i+")", row).css("background-color", "#0066ff")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   }
 }
     }'))) %>% 
@@ -227,8 +233,10 @@ server <- function(input, output) {
         $("td:eq("+i+")", row).css("background-color", " #ffc999")
   } else if(data[i]==num_data[1]) {
         $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[0]) {
         $("td:eq("+i+")", row).css("background-color", "#ff7700")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   }
         }
   }')),rownames = FALSE) %>%
@@ -252,8 +260,10 @@ server <- function(input, output) {
       $("td:eq("+i+")", row).css("background-color", " #ffc999")
   } else if(data[i]==num_data[1]) {
       $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+      $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[0]) {
       $("td:eq("+i+")", row).css("background-color", "#ff7700")
+      $("td:eq("+i+")", row).css("color", "#ffffff")
   }
 }
     }')),rownames = FALSE) %>%
@@ -287,8 +297,10 @@ server <- function(input, output) {
           $("td:eq("+i+")", row).css("background-color", " #ffc999")
           } else if(data[i]==num_data[3]) {
           $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           } else if(data[i]==num_data[2]) {
           $("td:eq("+i+")", row).css("background-color", "#ff7700")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           }
           }
     }')),rownames = FALSE) %>%
@@ -310,8 +322,10 @@ server <- function(input, output) {
           $("td:eq("+i+")", row).css("background-color", " #ffc999")
           } else if(data[i]==num_data[2]) {
           $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           } else if(data[i]==num_data[1]) {
           $("td:eq("+i+")", row).css("background-color", "#ff7700")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           }
           }
     }')),rownames = FALSE) %>%
@@ -339,8 +353,10 @@ server <- function(input, output) {
           $("td:eq("+i+")", row).css("background-color", " #ffc999")
           } else if(data[i]==num_data[3]) {
           $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           } else if(data[i]==num_data[2]) {
           $("td:eq("+i+")", row).css("background-color", "#ff7700")
+          $("td:eq("+i+")", row).css("color", "#ffffff")
           }
           }
     }')),rownames = FALSE) %>%
@@ -362,8 +378,10 @@ server <- function(input, output) {
         $("td:eq("+i+")", row).css("background-color", " #ffc999")
   } else if(data[i]==num_data[2]) {
         $("td:eq("+i+")", row).css("background-color", "#ffa04d")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   } else if(data[i]==num_data[1]) {
         $("td:eq("+i+")", row).css("background-color", "#ff7700")
+        $("td:eq("+i+")", row).css("color", "#ffffff")
   }
         }
   }')),rownames = FALSE) %>% formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
