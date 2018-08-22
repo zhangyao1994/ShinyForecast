@@ -1,7 +1,7 @@
 # Define server logic ----
 server <- function(input, output) {
   
-  # Slection Connection between page 1 and 2
+  # Slection Connection between page 1 and 2----
   output$filter1 <- renderUI({
     selection <- input$CFG
     selectInput("CFG2", "CFG Selection", 
@@ -23,8 +23,8 @@ server <- function(input, output) {
                 choices = Regions, selected = selection)
   })
   
-  # Page 1
-  # Plot HDD Trends
+  # Page 1----
+  # Plot HDD Trends ####
   output$selected_plot <- renderPlotly({
     # for certain CFG and Region
     p <- ggplotly(ggplot(filter(CFG_fcast.joined,CFG==input$CFG,Region==input$Region), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
@@ -32,7 +32,7 @@ server <- function(input, output) {
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste(input$CFG,input$Region,'Weekly Sales'), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
-                    scale_color_tableau('tableau10medium') +
+                    scale_color_tableau('Tableau 10') +
                     scale_x_discrete(breaks = c('FY17W01', 'FY18W01', 'FY19W01')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
     
@@ -47,7 +47,7 @@ server <- function(input, output) {
     APE.selected
   })
   
-  # APE values Forecast Region----
+  # APE values Forecast By Week----
   APEValues_week <- reactive({
     data.selected <- filter(APEresults,CFG==input$CFG,Region==input$Region)
     APE.selected <- data.selected[,seq(3,16,2)]
@@ -119,7 +119,7 @@ server <- function(input, output) {
   }
   )
   
-  # Plot Errors
+  # Plot Errors----
   output$ErrorPlotRegion <- renderPlotly({
     ggplotly(filter(Eval.results_fcastRegion,Region==input$Region,Results==input$Metric) %>% 
                select(-Region,-Results) %>%
@@ -128,7 +128,7 @@ server <- function(input, output) {
                geom_bar(stat = "identity") +
                labs(title = paste('Model Comparison by Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
-               scale_fill_tableau('tableau10medium'))
+               scale_fill_tableau('Tableau 10'))
   })
   output$ErrorPlotWeekly <- renderPlotly({
     ggplotly(filter(Eval.results_wk,Region==input$Region,Results==input$Metric) %>% 
@@ -138,11 +138,11 @@ server <- function(input, output) {
                geom_bar(stat = "identity") +
                labs(title = paste('Model Comparison by Weekly Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
-               scale_fill_tableau('tableau10medium'))
+               scale_fill_tableau('Tableau 10'))
   })
   
-  # Page 2
-  # Plot CV
+  # Page 2----
+  # Plot CV----
   output$CV_plotQ1 <- renderPlotly({
     # for certain CFG and Region
     p <- ggplotly(ggplot(filter(All_fcast_CV,CFG==input$CFG2,Region==input$Region2,Quarter=="FY18Q1"), aes(x=Fiscal_Wk,y=HDD_QTY,group = Model, color = Model)) +
@@ -150,7 +150,7 @@ server <- function(input, output) {
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q1"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
-                    scale_color_tableau('tableau10medium') +
+                    scale_color_tableau('Tableau 10') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
     print(p)
@@ -162,7 +162,7 @@ server <- function(input, output) {
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q2"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
-                    scale_color_tableau('tableau10medium') +
+                    scale_color_tableau('Tableau 10') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
     print(p)
@@ -174,7 +174,7 @@ server <- function(input, output) {
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q3"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
-                    scale_color_tableau('tableau10medium') +
+                    scale_color_tableau('Tableau 10') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0)) 
     print(p)
@@ -186,7 +186,7 @@ server <- function(input, output) {
                     geom_line(size = 1.5,alpha=0.6) +
                     labs(title = paste("FY18Q4"), x = "Fiscal Week", y = "Part Quantity") +
                     theme_minimal(base_size = 14) +
-                    scale_color_tableau('tableau10medium') +
+                    scale_color_tableau('Tableau 10') +
                     scale_x_discrete(breaks = c('W01', 'W07','W13')) +
                     scale_y_continuous(label=comma) + expand_limits(y = 0))
     print(p)
@@ -214,7 +214,7 @@ server <- function(input, output) {
     APE.selected
   })
   
-  # Show the values in an HTML table ----
+  # Show the Ape values in an HTML table ----
   output$CV_APEvalues <- renderDataTable({
     APE.selected <- CV_APEValues()
     APE.selected %>% 
@@ -270,7 +270,7 @@ server <- function(input, output) {
       formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
   })
   
-  # Page 3
+  # Page 3----
   Qtr_flag <- reactive({
     if (input$QtrMean=='Quarters'){
       1} else {2}
@@ -387,7 +387,7 @@ server <- function(input, output) {
   }')),rownames = FALSE) %>% formatRound(columns=c('Prophet','ARIMA','TBATS','lm','RF','Xgboost'), digits=2)
   }})
   
-  # Plot Errors
+  # Plot Errors----
   output$CV_ErrorPlotRegion <- renderPlotly({
     ggplotly(filter(Eval.CV_fcastRegion,Region==input$Region3,Results==input$Metric2) %>% 
                select(-Region,-Results) %>%
@@ -396,7 +396,7 @@ server <- function(input, output) {
                geom_bar(stat = "identity") +
                labs(title = paste('Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
-               scale_fill_tableau('tableau10medium'))
+               scale_fill_tableau('Tableau 10'))
   })
   output$CV_ErrorPlotWeekly <- renderPlotly({
     ggplotly(filter(Eval.CV_wk,Region==input$Region3,Results==input$Metric2) %>% 
@@ -406,7 +406,7 @@ server <- function(input, output) {
                geom_bar(stat = "identity") +
                labs(title = paste('Weekly Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
-               scale_fill_tableau('tableau10medium'))
+               scale_fill_tableau('Tableau 10'))
   })
 }
 
