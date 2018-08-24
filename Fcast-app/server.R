@@ -126,7 +126,7 @@ server <- function(input, output) {
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
-               labs(title = paste('Model Comparison by Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
+               labs(title = paste('Model Comparison by Forecast Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
                scale_fill_tableau('Tableau 10'))
   })
@@ -394,7 +394,7 @@ server <- function(input, output) {
                gather(key="Model",value="Value") %>%
                ggplot(aes(Model,Value)) +
                geom_bar(stat = "identity") +
-               labs(title = paste('Forecast Region Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
+               labs(title = paste('Forecast Accuracy'), x = "Models", y = paste(str_replace_all(input$Metric2,'_',' '),"(%)")) + 
                theme_minimal(base_size = 14) + 
                scale_fill_tableau('Tableau 10'))
   })

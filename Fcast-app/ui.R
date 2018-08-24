@@ -35,7 +35,7 @@ ui <- function(request){
                      br()
             ),
             
-            # Select CFG, Region, and Overall Metrics on One Row
+            # Select CFG, Region, and Overall Metrics on One Row----
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
@@ -52,54 +52,54 @@ ui <- function(request){
               )
             ),
             
-            # Output the HDD Trends and APE value tables
+            # Output the HDD Trends and APE value tables----
             fluidRow(
               column(12,
                      box(title = "FY19W07-FY19W20 Forecast Result Comparison",
                          width = NULL, status = "primary", solidHeader = T,
                          p('Based on the sales data before FY19W07, different models are applied to forecast HDD demand during FY19W07-FY19W20. Forecast results are compared to MRP.'),
-                         p('Note: for each row in the tables, darker orange colors indicate lower Absolute Percent Errors (APE), which are preferred.'),
+                         p('Note: for each row in the tables, darker blue colors indicate lower Absolute Percent Errors (APE), which are preferred.'),
                          column(width = 7, 
                                 plotlyOutput("selected_plot")
                          ),
                          column(width = 5,
-                                h4("APE of Forecast Region (%)"),
+                                h4("Absolute Percent Error (%)"),
                                 # Output: Table summarizing the values entered ----
-                                dataTableOutput("APEvalues"),
-                                
-                                h4("Weekly Mean APE (%)"),
-                                # Output: Table summarizing the values entered ----
-                                dataTableOutput("APEValues_week")
+                                dataTableOutput("APEvalues")
                          )
                      )
               )
             ),
             
-            # Overall Evaluation for All CFGs
+            # Overall Evaluation for All CFGs----
             fluidRow(column(12,
                             box(title = "Overall Evaluation for All CFGs",
                                 width = NULL, status = "primary", solidHeader = T,
                                 p("Attainment Rate is the percentage of CFGs whose APEs are below 20% and higher is better. For MAPE and MAPE median, lower is better."),
-                                p('"Comb" Model is selecting the model with the lowerst MAPE for each CFG during the Train Session.'),
-                                column(6,plotlyOutput('ErrorPlotRegion')
+                                p('"Selected" Model is selecting the model with the lowerst MAPE for each CFG during the Train Session.'),
+                                
+                                column(3,align = 'center'
                                 ),
-                                column(6,plotlyOutput('ErrorPlotWeekly')
+                                column(6,align = 'center',
+                                       plotlyOutput('ErrorPlotRegion')
                                 )
+                                # column(6,plotlyOutput('ErrorPlotWeekly')
+                                # )
                             )
             )
             )
           ),
           
-          # Page 2
+          # Page 2----
           tabPanel(
-            'Train Session', id = 'Cross-Validation',
+            'Cross-Validation', id = 'Cross-Validation',
             
             tags$div(id = "mydiv",
                      br(),
                      br()
             ),
             
-            # Select CFG, Region, and Overall Metrics on One Row
+            # Select CFG, Region, and Overall Metrics on One Row----
             fluidRow(
               column(width = 12,
                      box(width = NULL, status = "info", solidHeader = T,
@@ -135,20 +135,20 @@ ui <- function(request){
                                 p('Note: for each row, darker orange colors indicate lower errors, which are preferred.'),
                                 # Output: Table summarizing the values entered ----
                                 column(width = 12, align = 'center',
-                                       h4("APE of Forecast Region (%)"),
-                                       dataTableOutput("CV_APEvalues")),
+                                       h4("Absolute Percent Error (%)"),
+                                       dataTableOutput("CV_APEvalues"))
                                 
                                 # Output: Table summarizing the values entered ----
-                                column(width = 12, align = 'center',
-                                       h4("Weekly Mean APE (%)"),
-                                       dataTableOutput("CV_APEValues_week"))
+                                # column(width = 12, align = 'center',
+                                #        h4("Weekly Mean APE (%)"),
+                                #        dataTableOutput("CV_APEValues_week"))
                             )
                      )
               )
             )
           ),
           
-          # Page 3
+          # Page 3----
           tabPanel(
             'Model Evaluation', id = 'Model-Evaluation',
             
@@ -180,14 +180,14 @@ ui <- function(request){
                          status = "primary",
                          p("This page shows the evaluation results of Train Session, which is the quarterly cross-validation session."),
                          p('Note: for each row, darker orange colors indicate lower errors, which are preferred.'),
-                         # footer = "* For each row, light green: the min; light blue: the 2nd min; orange: the 3rd min",
+                         # footer = "* For each row, light green: the min; light blue: the 2nd min; blue: the 3rd min",
                          dataTableOutput("MAPE_CV.Table")
-                     ),
-                     box(title = "Cross-Validation Results: Weekly MAPE (%)", width = 12, solidHeader = T,
-                         status = "primary",
-                         footer = "* For each row, darker orange colors indicate lower errors, which are preferred.",
-                         dataTableOutput("MAPE_CV_week.Table")
                      )
+                     # box(title = "Cross-Validation Results: Weekly MAPE (%)", width = 12, solidHeader = T,
+                     #     status = "primary",
+                     #     footer = "* For each row, darker blue colors indicate lower errors, which are preferred.",
+                     #     dataTableOutput("MAPE_CV_week.Table")
+                     # )
               ),
               column(width = 4,
                      box(title = "Overall Evaluation for All CFGs", width = 12, solidHeader = T,
@@ -196,13 +196,13 @@ ui <- function(request){
                          p('"Comb" Model is selecting the model with the lowerst MAPE for each CFG.'),
                          column(12,plotlyOutput('CV_ErrorPlotRegion')
                          )
-                     ),
-                     box(#collapsible = TRUE, collapsed = TRUE,# This does not work
-                         title = "Overall Evaluation for All CFGs using Weekly errors", width = 12, solidHeader = T,
-                         status = "primary", 
-                         column(12,plotlyOutput('CV_ErrorPlotWeekly')
-                         )
                      )
+                     # box(#collapsible = TRUE, collapsed = TRUE,# This does not work
+                     #     title = "Overall Evaluation for All CFGs using Weekly errors", width = 12, solidHeader = T,
+                     #     status = "primary", 
+                     #     column(12,plotlyOutput('CV_ErrorPlotWeekly')
+                     #     )
+                     # )
               )
             ) 
           )# Page 3
